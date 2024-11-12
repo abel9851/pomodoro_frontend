@@ -6,7 +6,7 @@ const items = ref([])
 
 onMounted(async () => {
     try {
-        const response = await axios.get('http://localhost:8000/api/items/')
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/projects/')
         items.value = response.data
     } catch (error) {
         console.error(error)
@@ -18,7 +18,7 @@ onMounted(async () => {
     <div>
         <h2>Item List</h2>
         <ul>
-            <li v-for="item in items" :key="item.id">{{ item.name }}: {{ item.description }}</li>
+            <li v-for="item in items" :key="item.name">{{ item.name }}: {{ item.description }}</li>
         </ul>
     </div>
 </template>
