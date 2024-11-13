@@ -13,7 +13,8 @@ import ItemList from './components/ItemList.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
-  <ItemList />
+  <router-link to="/projects">Items</router-link>
+  <router-view></router-view>
 </template>
 
 <style scoped>

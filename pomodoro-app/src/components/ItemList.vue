@@ -2,7 +2,14 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const items = ref([])
+// Item 인터페이스 정의
+interface Item {
+    name: string;
+    color: string;
+}
+
+// items 변수를 Item 타입의 배열로 선언하고 빈 배열로 초기화
+const items = ref<Item[]>([])
 
 onMounted(async () => {
     try {
@@ -18,7 +25,7 @@ onMounted(async () => {
     <div>
         <h2>Item List</h2>
         <ul>
-            <li v-for="item in items" :key="item.name">{{ item.name }}: {{ item.description }}</li>
+            <li v-for="item in items" :key="item.name">{{ item.name }}: {{ item.color }}</li>
         </ul>
     </div>
 </template>
