@@ -1,24 +1,18 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
-import ItemList from './components/ItemList.vue'
+import TaskList from './components/TaskList.vue'
+import Timer from './components/Timer.vue'
 </script>
 
 <template>
   <div class="container"> <!-- what is class, container?-->
-    <aside class="sidebar">  <!-- what is aside tag? -->
-      <ItemList />
-    </aside>
     <main class="main-content">
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://vuejs.org/" target="_blank">
-          <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-        </a>
+        <Timer />
       </div>
-      <HelloWorld msg="Vite + Vue" />
-      <router-view></router-view>
+      <!-- <HelloWorld msg="Vite + Vue" /> -->
+      <!-- <router-view></router-view> -->
+      <TaskList />
     </main>
   </div>
 </template>
@@ -26,13 +20,6 @@ import ItemList from './components/ItemList.vue'
 <style scoped>
 .container {
   display: flex; /* what is flex? */
-}
-.sidebar {
-  width: 15.625rem; /* what is width? */
-  background-color: #af929335;
-  /*position: relatve; 다르게 설정해야한다.
-  left: -30px; */ 
-  padding: 1rem; /* what is padding, rem? */
 }
 .main-content {
   flex: 1;

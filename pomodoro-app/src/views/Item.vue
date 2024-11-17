@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h1>Item</h1>
+        <h1>Task</h1>
         <ItemList/>
     </div>
 </template>
 <script setup lang="ts">
-import ItemList from '../components/ItemList.vue'
+import TaskList from '../components/TaskList.vue'
 </script>
