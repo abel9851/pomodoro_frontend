@@ -28,12 +28,15 @@ import ItemList from './components/ItemList.vue'
   display: flex; /* what is flex? */
 }
 .sidebar {
-  width: 250px; /* what is width? */
+  width: 15.625rem; /* what is width? */
+  background-color: #af929335;
+  /*position: relatve; 다르게 설정해야한다.
+  left: -30px; */ 
   padding: 1rem; /* what is padding, rem? */
 }
 .main-content {
   flex: 1;
-  padding: 1rem;
+  padding: 3rem;
 }
 
 .logo {
