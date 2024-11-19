@@ -77,11 +77,16 @@ onUnmounted(() => {
         <!-- 중앙 시간 -->
         <p class="time-display">{{ formattedTime }}</p>
 
-        <!-- 숫자 가로 배치 -->
+        <!-- 숫자와 막대 가로 배치 -->
         <div class="ticks-container" @mousedown="startDrag">
-            <span class="tick" v-for="n in 60" :key="n" :class="{ active: n === totalMinutes.value }">
-                {{ n }}
-            </span>
+            <div class="tick" v-for="n in 60" :key="n">
+                <span :class="{ active: n === totalMinutes.value }" class="tick-number">
+                    {{ n }}
+                </span>
+                <div :class="{ active: n === totalMinutes.value }" class="tick-bar"></div>
+            </div>
+            <!-- 정삼각형 눈금 -->
+            <div class="triangle"></div>
         </div>
 
         <!-- 컨트롤 버튼 -->
@@ -113,11 +118,12 @@ onUnmounted(() => {
     font-weight: bold;
 }
 
-/* 숫자 컨테이너 */
+/* 숫자와 막대 컨테이너 */
 .ticks-container {
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     overflow-x: auto;
     width: 100%;
     padding: 1rem 0;
@@ -126,15 +132,47 @@ onUnmounted(() => {
 
 /* 숫자 */
 .tick {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0 1rem;
+}
+
+.tick-number {
     font-size: 1.5rem;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
     transition: color 0.2s;
 }
 
-.tick.active {
+.tick-number.active {
     color: white;
+}
+
+/* 막대 */
+.tick-bar {
+    width: 4px;
+    height: 16px; /* 막대 길이 */
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.2s;
+}
+
+.tick-bar.active {
+    background-color: white;
+}
+
+/* 정삼각형 눈금 */
+.triangle {
+    position: absolute;
+    top: 100%; /* 막대 컨테이너 아래로 배치 */
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-bottom: 10px solid white;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    transform: translateX(-50%);
 }
 
 /* 컨트롤 버튼 */
