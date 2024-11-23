@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-display {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .scroll-area {
+            width: 200%;
+            height: 3.4rem;
+            background-color: #444;
+            /* border-radius: 1px; */
+            position: relative;
+            overflow: hidden;
+            /* cursor: grab; */
+        }
+
+        .scroll-bar {
+            width: 235%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+
+            /* 주축을 따라 alignment container안에서 고르게 분포되는 것을 뜻한다. */
+            /* https://developer.mozilla.org/en-US/docs/Glossary/Main_Axis */
+            /* https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction */
+            /* https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir */
+            /* https://developer.mozilla.org/en-US/docs/Glossary/Logical_properties#inline_direction */
+            /* flex-direction은 main axis(축)와 direction을 정의하는 것으로 flex container 안에 있는
+            flex item들이 어떻게 위치하는지를 설정한다. row, row-reverse, column, column-reverse */
+            /* https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content */
+            /* position: absolute; */
+            /* position은 문서 상의 요소를 배치하는 방법을 지정한다. top, right, left, bottom 속성잉 요소를
+            배치할 최종 위치를 결정한다. */
+            /* 가장 가까운 위치 조정 요소에 대해 상대적으로 배치한다. 이 경우에는 scroll-area다.  */
+            /* https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_works */
+            /* https://developer.mozilla.org/ko/docs/Web/CSS/position */
+            /* https://marina-ferreira.github.io/tutorials/css/position-absolute/ */
+        }
+
+        .tick {
+            width: 1px;
+            height: 20px;
+            background-color: white;
+            /* margin: 0 */
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="timer-container">
+        <div class="time-display" id="timeDisplay">25:00</div>
+        <div class="scroll-area" id="scrollArea">
+            <!-- good -->
+            <!-- TODO: 1. scroll-bar에 막대를 추가하자.  -->
+            <!-- TODO: 2. scroll-bar가 wheel event로 움직이도록 한다.  -->
+            <!-- TODO: 2. scroll-bar가 wheel event로 움직일시, 60:00 or 00:00에 도달하면 움직임을 멈추도록 한다.  -->
+            <div class="scroll-bar" id="scrollBar"></div>
+        </div>
+    </div>
+
+    <script src="mouseEvent.js"></script>
+</body>
+
+</html>
