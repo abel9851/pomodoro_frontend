@@ -38,12 +38,15 @@
         }
 
         .scroll-bar {
-            width: 235%;
+            width: 7200px;
             height: 100%;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
+            /* flex-start가 뭐지 ? */
             align-items: center;
             position: absolute;
+            transition: transform 0.1s ease-out;
+            /* 이게 있는거와 없는것의 차이를 모르겠다. */
 
             /* 주축을 따라 alignment container안에서 고르게 분포되는 것을 뜻한다. */
             /* https://developer.mozilla.org/en-US/docs/Glossary/Main_Axis */
@@ -63,28 +66,25 @@
         }
 
         .tick {
-            width: 1px;
+            width: 4px;
             height: 20px;
             background-color: white;
-            /* margin: 0 */
-
-
+            /* margin: 01px; */
+            margin: 0 6px;
         }
     </style>
 </head>
 
 <body>
     <div class="timer-container">
-        <div class="time-display" id="timeDisplay">25:00</div>
+        <div class="time-display" id="timeDisplay">60:00</div>
         <div class="scroll-area" id="scrollArea">
             <!-- good -->
-            <!-- TODO: 1. scroll-bar에 막대를 추가하자.  -->
             <!-- TODO: 2. scroll-bar가 wheel event로 움직이도록 한다.  -->
             <!-- TODO: 2. scroll-bar가 wheel event로 움직일시, 60:00 or 00:00에 도달하면 움직임을 멈추도록 한다.  -->
             <div class="scroll-bar" id="scrollBar"></div>
         </div>
     </div>
-
     <script src="mouseEvent.js"></script>
 </body>
 

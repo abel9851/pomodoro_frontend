@@ -1,5 +1,5 @@
 // Timer Variables
-let minutes = 25;
+let minutes = 60;
 let seconds = 0;
 
 // DOM Elements
@@ -19,7 +19,8 @@ function updateTimeDisplay() {
 }
 
 function createTicks() {
-    for (let i = 0; i < 60; i++) {
+    const totalTicks = 360;
+    for (let i = 0; i < totalTicks; i++) {
         const tick = document.createElement("div");
         tick.classList.add("tick");
         scrollBar.appendChild(tick);
@@ -27,6 +28,8 @@ function createTicks() {
 }
 
 createTicks();
+
+let scrollPosition = 0;
 
 // Event Listener for Scrolling
 let lastY = 0;
@@ -50,11 +53,14 @@ scrollArea.addEventListener("wheel", (e) => {
     // delta는 여기서 변화량
     // 일반적으로 두 값의 차이를 의믜한다.
     const delta = e.deltaY;
-
     // Adjust minutes
     // A positive value indicates that the user is scrolling down.
     // when the user is scrolling down, delta value is 오른다.
 
+    scrollPosition += delta;
+
+    scrollBar.style.transform = `translateX(${-scrollPosition}px)`;
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/transform
 
 
     if (delta > 0) {
@@ -94,7 +100,19 @@ scrollArea.addEventListener("wheel", (e) => {
         seconds = 0;
     }
 
+    // Limit scroll position to the valid range
+    if (scrollPosition > 7200) { // 7200px corresponds to 60:00
+        scrollPosition = 7200;
+    } else if (scrollPosition < 0) { // 0px corresponds to 00:00
+        scrollPosition = 0;
+    }
+
+    // Update the time display and the scroll position
     updateTimeDisplay();
+
+    // Adjust the scrollBar position to reflect the time (e.g., 60 minutes -> 7200px)
+    const timePercentage = (minutes * 60 + seconds) / 3600;  // 60 minutes = 3600 seconds
+    scrollBar.style.transform = `translateX(${-(timePercentage * 7200)}px)`;
 });
 
 // Initial Display Update
