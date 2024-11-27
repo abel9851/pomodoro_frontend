@@ -58,10 +58,29 @@ scrollArea.addEventListener("wheel", (e) => {
     // when the user is scrolling down, delta value is 오른다.
 
     scrollPosition += delta;
+    console.log("현재 scrollPosition의 값:", { scrollPosition })
+    // Ensure the scroll position is within bounds (0 to 7200px range)
+    // 전제가 틀렸다. delta의 상한선을 정하면 안되는 거였다.
+    // delta는 wheel의 세기에 따라 올라가는 폭이 다르기 때문에
+    // 00:00에 도달하는 수치가 제각각이기 때문이다.
+    if (scrollPosition > 1923) { // 7200px corresponds to 60:00
+        // wheel을 아래로 내리면 여기가 실행된다.
+        console.log("7200이상일 때", { scrollPosition })
+        // scrollPosition = 0;
+    } else if (scrollPosition < 0) { // 0px corresponds to 00:00
+        // wheel을 위로 올리면, 여기가 실행된다.
+        console.log("0이하 일때", { scrollPosition })
+        scrollPosition = 0;
 
-    scrollBar.style.transform = `translateX(${-scrollPosition}px)`;
+    }
+
+    // Update the scrollBar transform to move the scroll position
+    // scrollPosition만큼, 이동하는건데, 0이되면 0px움직인다는것으로, 움직이 않아야해.
+    // 그런데 scroll down을 해서 position 7200이상이 되면, 7200px을 계속 움직인다는거니까
+    // 이건 말이 안되거든? 
+    scrollBar.style.transform = `translateX(${-scrollPosition}px)`; // scroll을 위로 올리면  - * - 로, +가 된다. 7200까지 도달하면, 60분에 tick이 멈춘다.
+    // scrollBar.style.transform = `translateX(${-}px)`;
     // https://developer.mozilla.org/en-US/docs/Web/CSS/transform
-
 
     if (delta > 0) {
         // Scrolling down (decrease time)
@@ -80,12 +99,9 @@ scrollArea.addEventListener("wheel", (e) => {
             if (seconds >= 60) {
                 seconds = 0;
                 minutes++;
-                // minutes++;
             }
         }
     }
-
-    console.log(delta);
 
     // 움직이지 않았던 이유는 index.html의 script의 파일에 지정된 js명이 달랐기 때문이다...
     if (minutes > 60) {
@@ -93,27 +109,15 @@ scrollArea.addEventListener("wheel", (e) => {
         // FIXME: 초도 멈추도록 고정한다.
         // FIXED: 초가 멈추도록 seconds = 0;을 했다.
         minutes = 60;
-        secondes = 0;
+        seconds = 0;
     };
     if (minutes < 0) {
         minutes = 0;
         seconds = 0;
     }
 
-    // Limit scroll position to the valid range
-    if (scrollPosition > 7200) { // 7200px corresponds to 60:00
-        scrollPosition = 7200;
-    } else if (scrollPosition < 0) { // 0px corresponds to 00:00
-        scrollPosition = 0;
-    }
-
     // Update the time display and the scroll position
     updateTimeDisplay();
-
-    // Adjust the scrollBar position to reflect the time (e.g., 60 minutes -> 7200px)
-    const timePercentage = (minutes * 60 + seconds) / 3600;  // 60 minutes = 3600 seconds
-    scrollBar.style.transform = `translateX(${-(timePercentage * 7200)}px)`;
 });
-
 // Initial Display Update
 // updateTimeDisplay();

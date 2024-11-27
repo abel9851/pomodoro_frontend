@@ -1,3 +1,29 @@
+<template>
+    <div class="timer">
+        <!-- 중앙 시간 -->
+        <p class="time-display">{{ formattedTime }}</p>
+
+        <!-- 숫자와 막대 가로 배치 -->
+        <div class="ticks-container" @mousedown="startDrag">
+            <div class="tick" v-for="n in 60" :key="n">
+                <span :class="{ active: n === totalMinutes.value }" class="tick-number">
+                    {{ n }}
+                </span>
+                <div :class="{ active: n === totalMinutes.value }" class="tick-bar"></div>
+            </div>
+            <!-- 정삼각형 눈금 -->
+            <div class="triangle"></div>
+        </div>
+
+        <!-- 컨트롤 버튼 -->
+        <div class="controls">
+            <button @click="startTimer">Start</button>
+            <button @click="stopTimer">Stop</button>
+            <button @click="resetTimer">Reset</button>
+        </div>
+    </div>
+</template>
+
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
@@ -8,7 +34,7 @@ let timer = null
 
 // 드래그 상태
 const isDragging = ref(false)
-const dragPosition = ref(0) // 드래그 위치 추적
+const dragPosition = ref(0) // 드래그 시작 위치
 
 // 타이머 시작/멈춤/리셋
 const startTimer = () => {
@@ -37,6 +63,7 @@ const resetTimer = () => {
 const startDrag = (event) => {
     isDragging.value = true
     dragPosition.value = event.clientX // 시작 위치 저장
+    event.preventDefault() // 기본 선택 방지
 }
 
 // 드래그 중
@@ -72,32 +99,6 @@ onUnmounted(() => {
 })
 </script>
 
-<template>
-    <div class="timer">
-        <!-- 중앙 시간 -->
-        <p class="time-display">{{ formattedTime }}</p>
-
-        <!-- 숫자와 막대 가로 배치 -->
-        <div class="ticks-container" @mousedown="startDrag">
-            <div class="tick" v-for="n in 60" :key="n">
-                <span :class="{ active: n === totalMinutes.value }" class="tick-number">
-                    {{ n }}
-                </span>
-                <div :class="{ active: n === totalMinutes.value }" class="tick-bar"></div>
-            </div>
-            <!-- 정삼각형 눈금 -->
-            <div class="triangle"></div>
-        </div>
-
-        <!-- 컨트롤 버튼 -->
-        <div class="controls">
-            <button @click="startTimer">Start</button>
-            <button @click="stopTimer">Stop</button>
-            <button @click="resetTimer">Reset</button>
-        </div>
-    </div>
-</template>
-
 <style scoped>
 /* 타이머 전체 */
 .timer {
@@ -128,6 +129,7 @@ onUnmounted(() => {
     width: 100%;
     padding: 1rem 0;
     cursor: grab;
+    user-select: none; /* 텍스트 선택 방지 */
 }
 
 /* 숫자 */
