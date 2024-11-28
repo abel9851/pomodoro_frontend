@@ -18,8 +18,19 @@ function updateTimeDisplay() {
     timeDisplay.textContent = `${min}:${sec}`;
 }
 
+// 60분이야.
+// 60분은 60*60초야.
+// 즉, 3600초야.
+// tick 하나당 10초야.
+// 360개의 tick이 있어야해.
+// wheel을 돌리면 10초씩 움직여야해.
+// 현재 px은?
+// 7200px이야.
+// tick 하나당 20px?
+// 즉, wheel을 돌리면 20px씩 움직여야해.
+
 function createTicks() {
-    const totalTicks = 360;
+    const totalTicks = 2;
     for (let i = 0; i < totalTicks; i++) {
         const tick = document.createElement("div");
         tick.classList.add("tick");
@@ -29,7 +40,7 @@ function createTicks() {
 
 createTicks();
 
-let scrollPosition = 0;
+let scrollPosition = 7200;
 
 // Event Listener for Scrolling
 let lastY = 0;
@@ -57,28 +68,38 @@ scrollArea.addEventListener("wheel", (e) => {
     // A positive value indicates that the user is scrolling down.
     // when the user is scrolling down, delta value is 오른다.
 
-    scrollPosition += delta;
+    // scrollPosition += delta; // scrollbar를 wheel의 세기만큼 움직이게 해선 안된다. 균등하게 해야한다.
+    // delta +가 감지되면, wheel을 아래로 한다는 뜻이다. -> 그러면 minutes가 줄어든다.
+    // delta -가 감지되면, wheel을 위로 올린다는 뜻이다.
+    // wheel은, 돌리면 그게 console단위당, 값이 강도에 따라 엄청 변하는데
+    // console.log의 단위가 어떤 기준인지는 몰라도, 거기에 맞춰서 px을 균등하게 연산할 수 있어.
+    let scrollStep = 20; // Define a fixed scroll step, 20px씩 더하거나 뺀다.
+
+    if (delta < 0) {
+        // Scrolling up
+        console.log("scrolling up");
+        console.log("scroll up delta:", { delta });
+        scrollStep = scrollStep; // tick이 오른쪽으로 움직인다.
+    } else {
+        // Scrolling down
+        scrollStep = -scrollStep; // tick이 왼쪽으로 움직인다.
+    }
     console.log("현재 scrollPosition의 값:", { scrollPosition })
+    scrollBar.style.transform = `translateX(${scrollStep}px)`; // 누적이 아니다.
+    // scroll을 위로 올리면  - * - 로, +가 된다. 7200까지 도달하면, 60분에 tick이 멈춘다.
+
     // Ensure the scroll position is within bounds (0 to 7200px range)
     // 전제가 틀렸다. delta의 상한선을 정하면 안되는 거였다.
     // delta는 wheel의 세기에 따라 올라가는 폭이 다르기 때문에
     // 00:00에 도달하는 수치가 제각각이기 때문이다.
-    if (scrollPosition > 1923) { // 7200px corresponds to 60:00
-        // wheel을 아래로 내리면 여기가 실행된다.
-        console.log("7200이상일 때", { scrollPosition })
-        // scrollPosition = 0;
-    } else if (scrollPosition < 0) { // 0px corresponds to 00:00
-        // wheel을 위로 올리면, 여기가 실행된다.
-        console.log("0이하 일때", { scrollPosition })
-        scrollPosition = 0;
 
-    }
+    // wheel의 delta는 wheel의 강도에 따라 변화가 너무 심하니까 이걸 사용하면 안될거 같다.
+
 
     // Update the scrollBar transform to move the scroll position
     // scrollPosition만큼, 이동하는건데, 0이되면 0px움직인다는것으로, 움직이 않아야해.
     // 그런데 scroll down을 해서 position 7200이상이 되면, 7200px을 계속 움직인다는거니까
     // 이건 말이 안되거든? 
-    scrollBar.style.transform = `translateX(${-scrollPosition}px)`; // scroll을 위로 올리면  - * - 로, +가 된다. 7200까지 도달하면, 60분에 tick이 멈춘다.
     // scrollBar.style.transform = `translateX(${-}px)`;
     // https://developer.mozilla.org/en-US/docs/Web/CSS/transform
 
@@ -118,6 +139,26 @@ scrollArea.addEventListener("wheel", (e) => {
 
     // Update the time display and the scroll position
     updateTimeDisplay();
+
+    if (minutes == 60) { // 7200px corresponds to 60:00
+        // wheel을 아래로 내리면 여기가 실행된다.
+        console.log("minutes 60이상일 때", { scrollPosition })
+        scrollPosition = 7200; // 어느 한쪽을 0으로 해서는 안된다. 7200px에 도달해야한다. 
+        // scrollPosition이 +가 되는 경우는 언제인가?
+        // wheel을 아래로 내리면 발생한다.
+        // - * - 로 해서 translateX으로 인해 움직인다. 즉, 왼쪽을 향해 움직인다.
+        // 오른쪽으로 빈칸이 발생한다.
+        // 이 전제는 flex-start여야한다.
+    } else if (minutes == 0 && seconds == 0) { // 0px corresponds to 00:00
+        // wheel을 위로 올리면, 여기가 실행된다.
+        console.log("minutes 일때", { scrollPosition })
+        // scrollPosition이 -가 되는 경우는 언제인가?
+        // wheel을 위로 올리면 발생한다.
+        // - * + 로해서 translateX로 인해, tick들이 오른쪽을 향해 움직인다. |||| ->
+        // 왼쪽으로 빈칸이 발생한다.
+        scrollPosition = 0;
+    }
+
 });
 // Initial Display Update
 // updateTimeDisplay();
