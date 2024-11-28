@@ -1,3 +1,8 @@
+// 내가 만든 이것을 time slider, scroll timer interface, 
+// scrollable time selector
+// scrollable time picker
+// https://codesandbox.io/examples/package/time-picker-scroll
+// javascript slider
 // Timer Variables
 let minutes = 60;
 let seconds = 0;
@@ -40,7 +45,7 @@ function createTicks() {
 
 createTicks();
 
-let scrollPosition = 2880; // scrollBar의 width과 같게 설정해야한다. 
+let scrollPosition = 0; // scrollBar의 width과 같게 설정해야한다. ? 다르다.
 
 // wheel이라는 이벤트가 안맞는듯 하다.
 // TODO: wheel말고도 잡아끌기를 했을때에도 동작하게 할 것
@@ -71,7 +76,7 @@ scrollArea.addEventListener("wheel", (e) => {
     // delta -가 감지되면, wheel을 위로 올린다는 뜻이다.
     // wheel은, 돌리면 그게 console단위당, 값이 강도에 따라 엄청 변하는데
     // console.log의 단위가 어떤 기준인지는 몰라도, 거기에 맞춰서 px을 균등하게 연산할 수 있어.
-    let scrollStep = 8; // Define a fixed scroll step, 20px씩 더하거나 뺀다.
+    let scrollStep = 7; // Define a fixed scroll step, 20px씩 더하거나 뺀다.
 
 
     // scroll을 위로 올리면  - * - 로, +가 된다. 7200까지 도달하면, 60분에 tick이 멈춘다.
@@ -131,7 +136,7 @@ scrollArea.addEventListener("wheel", (e) => {
     if (minutes == 60) { // 7200px corresponds to 60:00
         // wheel을 아래로 내리면 여기가 실행된다.
         console.log("minutes 60이상일 때", { scrollPosition })
-        scrollPosition = 0; // 어느 한쪽을 0으로 해서는 안된다. 7200px에 도달해야한다. 
+        scrollPosition = 7; // 어느 한쪽을 0으로 해서는 안된다. 7200px에 도달해야한다. 
         // scrollPosition이 +가 되는 경우는 언제인가?
         // wheel을 아래로 내리면 발생한다.
         // - * - 로 해서 translateX으로 인해 움직인다. 즉, 왼쪽을 향해 움직인다.
@@ -144,20 +149,21 @@ scrollArea.addEventListener("wheel", (e) => {
         // wheel을 위로 올리면 발생한다.
         // - * + 로해서 translateX로 인해, tick들이 오른쪽을 향해 움직인다. |||| ->
         // 왼쪽으로 빈칸이 발생한다.
-        scrollPosition = 2562;
+        scrollPosition = 2507; // start가 0일때 위치가 scroll-area의 오른쪽 가장자리니까 2880px만큼 다 빼버리면 결국 start지점까지 빼도록 되어버린다. 그렇기 때문에 scroll-area의 폭만큼을 남겨야하기때문에 2507(tick의 위치조정을 위해 미묘하게 조정)이 된것이다.
     }
 
-    if (delta < 0) {
-        // Scrolling up
-        console.log("scrolling up");
-        console.log("scroll up delta:", { delta });
+    if (delta > 0) {
+        // Scrolling down
+        console.log("scroll down delta:", { delta });
         scrollStep = scrollStep; // tick이 오른쪽으로 움직인다.
     } else {
-        // Scrolling down
+        // Scrolling up
+        console.log("scroll up delta:", { delta });
         scrollStep = -scrollStep; // tick이 왼쪽으로 움직인다.
     }
     console.log("현재 scrollPosition의 값:", { scrollPosition })
-    scrollBar.style.transform = `translateX(${scrollPosition + scrollStep}px)`; // 누적이 아니다.
+    scrollPosition += scrollStep;
+    scrollBar.style.transform = `translateX(${scrollPosition}px)`; // 누적이 아니다.
 
 });
 // Initial Display Update
