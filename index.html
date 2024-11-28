@@ -29,21 +29,21 @@
 
         .scroll-area {
             width: 200%;
-            /* height: 3.4rem; */
+            height: 3.4rem;
             background-color: #444;
             /* border-radius: 1px; */
             position: relative;
-            /* display: flex; */
-            /* justify-content: center; */
+            display: flex;
+            justify-content: end;
             /* overflow: hidden; */
             /* cursor: grab; */
         }
 
         .scroll-bar {
-            width: 7200px;
+            width: 2280px;
             height: 3.4rem;
             display: flex;
-            justify-content: flex-start;
+            justify-content: flex-end;
             /* flex-start가 뭐지 ? */
             align-items: center;
             position: absolute;
@@ -71,8 +71,8 @@
             width: 2px;
             height: 20px;
             background-color: white;
-            /* margin: 01px; */
-            margin: 0 6px 0 0;
+            margin: 0 0 0 6px;
+            /* 6 * 360 21600px? */
         }
     </style>
 </head>
