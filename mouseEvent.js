@@ -30,7 +30,7 @@ function updateTimeDisplay() {
 // 즉, wheel을 돌리면 20px씩 움직여야해.
 
 function createTicks() {
-    const totalTicks = 2;
+    const totalTicks = 360;
     for (let i = 0; i < totalTicks; i++) {
         const tick = document.createElement("div");
         tick.classList.add("tick");
@@ -73,7 +73,7 @@ scrollArea.addEventListener("wheel", (e) => {
     // delta -가 감지되면, wheel을 위로 올린다는 뜻이다.
     // wheel은, 돌리면 그게 console단위당, 값이 강도에 따라 엄청 변하는데
     // console.log의 단위가 어떤 기준인지는 몰라도, 거기에 맞춰서 px을 균등하게 연산할 수 있어.
-    let scrollStep = 20; // Define a fixed scroll step, 20px씩 더하거나 뺀다.
+    let scrollStep = 6; // Define a fixed scroll step, 20px씩 더하거나 뺀다.
 
     if (delta < 0) {
         // Scrolling up
