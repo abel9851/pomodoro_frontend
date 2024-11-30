@@ -174,16 +174,22 @@ scrollArea.addEventListener("wheel", (e) => {
 // updateTimeDisplay();
 
 function startInterval() {
+
     if (minutes == 0 && seconds == 0) {
         clearInterval(timeInterval);
         timeInterval = null;
     }
 
     if (seconds == 0) {
+        scrollPosition += 0.7;
+        scrollBar.style.transform = `translateX(${scrollPosition}px)`;
         seconds = 59;
         minutes--;
     } else {
         seconds--;
+        scrollPosition += 0.7;
+        scrollBar.style.transform = `translateX(${scrollPosition}px)`;
+
     }
 
     updateTimeDisplay();
@@ -191,11 +197,7 @@ function startInterval() {
 
 function setTimer() {
     if (timeInterval) return; // Prevent multiple intervals
-
     timeInterval = setInterval(startInterval, 1000);
-
-    console.log("111", timeInterval);
-
 };
 
 
@@ -211,6 +213,10 @@ function resetInterval() {
     minutes = 60;
     seconds = 0;
 
+    scrollPosition = 0;
+    // translateX는 대상을 주어진 인자의 숫자만큼 한번만 이동시키는 것이지, 주기적으로 이동시키는게 아니다.
+    // 주기적으로 이동시키려면 setInterval같은 걸 사용하면 된다.
+    scrollBar.style.transform = `translateX(${scrollPosition}px)`;
     updateTimeDisplay();
 }
 

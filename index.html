@@ -74,6 +74,13 @@
             margin: 0 0 0 6px;
             /* 6 * 360 21600px? */
         }
+
+        .controls {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 0 6px;
+            font-size: 2rem;
+        }
     </style>
 </head>
 
@@ -85,6 +92,11 @@
             <!-- TODO: 2. scroll-bar가 wheel event로 움직이도록 한다.  -->
             <!-- TODO: 2. scroll-bar가 wheel event로 움직일시, 60:00 or 00:00에 도달하면 움직임을 멈추도록 한다.  -->
             <div class="scroll-bar" id="scrollBar"></div>
+        </div>
+        <div class="controls">
+            <button id="startButton">Start</button>
+            <button id="stopButton">Stop</button>
+            <button id="resetButton">Reset</button>
         </div>
     </div>
     <script src="mouseEvent.js"></script>
