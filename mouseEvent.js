@@ -6,11 +6,15 @@
 // Timer Variables
 let minutes = 60;
 let seconds = 0;
+let timeInterval = null;
 
 // DOM Elements
 const timeDisplay = document.getElementById("timeDisplay");
 const scrollArea = document.getElementById("scrollArea");
 const scrollBar = document.getElementById("scrollBar");
+const startButton = document.getElementById("startButton");
+const stopButton = document.getElementById("stopButton");
+const resetButton = document.getElementById("resetButton");
 
 // Function to Update Time Display
 function updateTimeDisplay() {
@@ -168,3 +172,48 @@ scrollArea.addEventListener("wheel", (e) => {
 });
 // Initial Display Update
 // updateTimeDisplay();
+
+function startInterval() {
+    if (minutes == 0 && seconds == 0) {
+        clearInterval(timeInterval);
+        timeInterval = null;
+    }
+
+    if (seconds == 0) {
+        seconds = 59;
+        minutes--;
+    } else {
+        seconds--;
+    }
+
+    updateTimeDisplay();
+}
+
+function setTimer() {
+    if (timeInterval) return; // Prevent multiple intervals
+
+    timeInterval = setInterval(startInterval, 1000);
+
+    console.log("111", timeInterval);
+
+};
+
+
+
+function stopInterval() {
+    clearInterval(timeInterval);
+    timeInterval = null;
+};
+
+function resetInterval() {
+    clearInterval(timeInterval);
+    timeInterval = null;
+    minutes = 60;
+    seconds = 0;
+
+    updateTimeDisplay();
+}
+
+startButton.addEventListener("click", setTimer);
+stopButton.addEventListener("click", stopInterval);
+resetButton.addEventListener("click", resetInterval);
