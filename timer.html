@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test timer</title>
+    <style>
+        .timer-container {
+            display: flex;
+            /* position: relative; */
+            /* width: 40rem; */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+
+        }
+
+        .time-display {
+            font-size: 4rem;
+        }
+
+        .controls {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="timer-container">
+        <div class="time-display" id="timeDisplay">
+            60:00
+        </div>
+        <div class="controls">
+            <button id="startButton">Start</button>
+        </div>
+    </div>
+
+    <script src="testTimer.js"></script>
+</body>
