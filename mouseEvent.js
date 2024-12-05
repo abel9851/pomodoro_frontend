@@ -68,9 +68,7 @@ createTicks();
 
 let scrollPosition = 0; // scrollBar의 width과 같게 설정해야한다. ? 다르다.
 
-// wheel이라는 이벤트가 안맞는듯 하다.
-// TODO: wheel말고도 잡아끌기를 했을때에도 동작하게 할 것
-scrollArea.addEventListener("wheel", (e) => {
+function handleWheelEvent(e) {
     // 브라우저의 스크롤 바의 행동을 막는 듯 하다.
     // 여기에 나온 e는 무엇을 뜻하는가? <div class="scroll-area" id="scrollArea">를 뜻하는건가?
     // 이 div에 관해서는 브라우저의 스크롤 바의 행동을 막는건가?
@@ -186,7 +184,11 @@ scrollArea.addEventListener("wheel", (e) => {
     scrollPosition += scrollStep;
     scrollBar.style.transform = `translateX(${scrollPosition}px)`; // 누적이 아니다.
 
-});
+}
+
+// wheel이라는 이벤트가 안맞는듯 하다.
+// TODO: wheel말고도 잡아끌기를 했을때에도 동작하게 할 것
+scrollArea.addEventListener("wheel", handleWheelEvent);
 // Initial Display Update
 // updateTimeDisplay();
 
@@ -213,6 +215,7 @@ function startInterval() {
 }
 
 function setTimer() {
+    scrollArea.removeEventListener("wheel", handleWheelEvent);
     if (timeInterval) return; // Prevent multiple intervals
     timeInterval = setInterval(startInterval, 1000);
 };
@@ -222,6 +225,7 @@ function setTimer() {
 function stopInterval() {
     clearInterval(timeInterval);
     timeInterval = null;
+    scrollArea.addEventListener("wheel", handleWheelEvent);
 };
 
 function resetInterval() {
@@ -235,6 +239,7 @@ function resetInterval() {
     // 주기적으로 이동시키려면 setInterval같은 걸 사용하면 된다.
     scrollBar.style.transform = `translateX(${scrollPosition}px)`;
     updateTimeDisplay();
+    scrollArea.addEventListener("wheel", handleWheelEvent);
 }
 
 startButton.addEventListener("click", setTimer);
