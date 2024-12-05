@@ -11,6 +11,7 @@ let timeInterval = null;
 // DOM Elements
 const timeDisplay = document.getElementById("timeDisplay");
 const scrollArea = document.getElementById("scrollArea");
+const timeLabels = document.getElementById("timeLabels"); // 시간을 표시한다. 간격을 표시한다.
 const scrollBar = document.getElementById("scrollBar");
 const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
@@ -38,6 +39,16 @@ function updateTimeDisplay() {
 // tick 하나당 20px?
 // 즉, wheel을 돌리면 20px씩 움직여야해.
 
+function createTimeLabels() {
+    const totalTimeLabels = 13; // 0부터 60까지이므로
+    for (let i = 0; i < totalTimeLabels; i++) {
+        const timeLabel = document.createElement("div");
+        timeLabel.classList.add("time-label");
+        timeLabel.textContent = `${i * 5}`;
+        timeLabels.appendChild(timeLabel);
+    }
+}
+
 function createTicks() {
     const totalTicks = 360;
     for (let i = 0; i < totalTicks; i++) {
@@ -47,6 +58,7 @@ function createTicks() {
     }
 }
 
+createTimeLabels();
 createTicks();
 
 let scrollPosition = 0; // scrollBar의 width과 같게 설정해야한다. ? 다르다.
