@@ -56,6 +56,9 @@ function createTicks() {
     for (let i = 0; i < totalTicks; i++) {
         const tick = document.createElement("div");
         tick.classList.add("tick");
+        if (i == 359 || i % 30 === 0) {
+            tick.style.height = "20px";
+        };
         scrollBar.appendChild(tick);
     }
 }
