@@ -39,20 +39,11 @@
             /* cursor: grab; */
         }
 
-        .time-labels {
+        .time-label {
             position: absolute;
-            display: flex;
-            flex-direction: row-reverse;
-            /* 간격맞추기가 들어가야한다. */
             font-size: 1rem;
-
-            color: white;
+            top: -0.07rem;
         }
-
-        /* .time-label {
-            font-size: 1rem;
-            top: -1.5rem;
-        } */
 
         .scroll-bar {
             width: 2880px;
@@ -109,7 +100,6 @@
             <!-- 4. 5분단위로 눈금을 표시한다. -->
             <!-- 5. 시간을 직접 타이핑 할수 있도록 한다. 숫자만 받기 -->
             <!-- 6. 시간을 설정한 만큼, 눈금과 그 위의 타임 라벨도 움직이도록 한다. -->
-            <div class="time-labels" id="timeLabels"></div>
             <div class="scroll-bar" id="scrollBar"></div>
         </div>
         <div class="controls">

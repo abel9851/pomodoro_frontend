@@ -11,7 +11,6 @@ let timeInterval = null;
 // DOM Elements
 const timeDisplay = document.getElementById("timeDisplay");
 const scrollArea = document.getElementById("scrollArea");
-const timeLabels = document.getElementById("timeLabels"); // 시간을 표시한다. 간격을 표시한다.
 const scrollBar = document.getElementById("scrollBar");
 const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
@@ -41,11 +40,14 @@ function updateTimeDisplay() {
 
 function createTimeLabels() {
     const totalTimeLabels = 13; // 0부터 60까지이므로
+
+    const labelWidth = 30 * 8;
     for (let i = 0; i < totalTimeLabels; i++) {
         const timeLabel = document.createElement("div");
         timeLabel.classList.add("time-label");
-        timeLabel.textContent = `${i * 5}`;
-        timeLabels.appendChild(timeLabel);
+        timeLabel.textContent = `${(totalTimeLabels - 1 - i) * 5}`;
+        timeLabel.style.left = `${i * labelWidth}px`;
+        scrollBar.appendChild(timeLabel);
     }
 }
 
