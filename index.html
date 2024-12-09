@@ -31,7 +31,7 @@
 
         /* 숫자가 2자리 전부 입력가능하게 할 것. */
         /* 화살표 지울 것. */
-        .time-input {
+        /* .time-input {
             width: 5.4rem;
             background-color: #333;
             border: none;
@@ -39,7 +39,29 @@
             text-align: center;
             font-size: 4rem;
             margin: 0 0.5rem;
+        } */
 
+        .time-input {
+            width: 4.3rem;
+            padding: 0;
+            margin: 0 !important;
+
+            background-color: #333;
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 4rem;
+            margin: 0 0.5rem;
+            appearance: textfield;
+            -moz-appearance: textfield;
+            /* Remove arrows in Firefox */
+        }
+
+        .time-input::-webkit-inner-spin-button,
+        .time-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            /* Remove arrows in Chrome, Safari */
+            margin: 0;
         }
 
         .scroll-area {
