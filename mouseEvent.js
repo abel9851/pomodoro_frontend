@@ -9,6 +9,8 @@ let seconds = 0;
 let timeInterval = null;
 
 // DOM Elements
+const minutesInput = document.getElementById("minutesInput");
+const secondsInput = document.getElementById("secondsInput");
 const timeDisplay = document.getElementById("timeDisplay");
 const scrollArea = document.getElementById("scrollArea");
 const scrollBar = document.getElementById("scrollBar");
@@ -37,6 +39,30 @@ function updateTimeDisplay() {
 // 7200px이야.
 // tick 하나당 20px?
 // 즉, wheel을 돌리면 20px씩 움직여야해.
+
+function parseTimeInput() {
+    const inputMinutes = parseInt(minutesInput.value, 10);
+    const inputSeconds = parseInt(secondsInput.value, 10);
+    if (!isNaN(inputMinutes) && !isNaN(inputSeconds)) {
+
+        if (inputSeconds > 59) {
+            seconds = 59;
+        } else if (inputSeconds < 0) {
+            seconds = 0;
+        } else {
+            seconds = inputSeconds;
+        }
+
+        if (inputMinutes >= 60) {
+            minutes = 60;
+            seconds = 0;
+        } else if (inputMinutes < 0) {
+            minutes = 25;
+        } else {
+            minutes = inputMinutes;
+        }
+    }
+}
 
 function createTimeLabels() {
     const totalTimeLabels = 13; // 0부터 60까지이므로
@@ -215,6 +241,7 @@ function startInterval() {
 }
 
 function setTimer() {
+    parseTimeInput();
     scrollArea.removeEventListener("wheel", handleWheelEvent);
     if (timeInterval) return; // Prevent multiple intervals
     timeInterval = setInterval(startInterval, 1000);

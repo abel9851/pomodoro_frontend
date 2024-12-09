@@ -23,8 +23,23 @@
         }
 
         .time-display {
+            display: flex;
+            align-items: center;
             font-size: 4rem;
             margin-bottom: 0.5rem;
+        }
+
+        /* 숫자가 2자리 전부 입력가능하게 할 것. */
+        /* 화살표 지울 것. */
+        .time-input {
+            width: 5.4rem;
+            background-color: #333;
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 4rem;
+            margin: 0 0.5rem;
+
         }
 
         .scroll-area {
@@ -96,15 +111,12 @@
 
 <body>
     <div class="timer-container">
-        <div class="time-display" id="timeDisplay">60:00</div>
+        <div class="time-display" id="timeDisplay">
+            <input class="time-input" id="minutesInput" type="number" min="0" max="60" value="60" /> : <input
+                class="time-input" id="secondsInput" type="number" min="0" max="59" value="00">
+        </div>
         <div class="scroll-area" id="scrollArea">
-            <!-- 1. 5분 단위의 시간을 매긴다. -->
-            <!-- 2. 5분단위의 위치로 타임 라벨을 맞춘다. -->
-            <!-- 3. tick과 타임라벨을 연동한다. -->
-            <!-- 4. 5분단위로 눈금을 표시한다. -->
             <!-- 5. 시간을 직접 타이핑 할수 있도록 한다. 숫자만 받기 -->
-            <!-- 6. 시간을 설정한 만큼, 눈금과 그 위의 타임 라벨도 움직이도록 한다. -->
-            <!-- 7. 현재 start를 눌러도 wheel을 움직일 수 있다. wheel을 움직이지 못하도록 해야한다. -->
             <div class="scroll-bar" id="scrollBar"></div>
         </div>
         <div class="controls">
