@@ -37,9 +37,8 @@ function updateTimeDisplay() {
     // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
     const min = String(minutesInput.value).padStart(2, "0");
     const sec = String(secondsInput.value).padStart(2, "0");
-    timeDisplay.textContent = `${min}:${sec}`;
-    minutesInput.disable = false;
-    secondsInput.disable = false;
+    minutesInput.value = min;
+    secondsInput.value = sec;
 }
 
 
@@ -261,6 +260,10 @@ function setTimer() {
     parseTimeInput();
     scrollArea.removeEventListener("wheel", handleWheelEvent);
     if (timeInterval) return; // Prevent multiple intervals
+
+    minutesInput.setAttribute("disabled", true);
+    secondsInput.setAttribute("disabled", true);
+
     timeInterval = setInterval(startInterval, 1000);
 };
 
@@ -270,6 +273,8 @@ function stopInterval() {
     clearInterval(timeInterval);
     timeInterval = null;
     scrollArea.addEventListener("wheel", handleWheelEvent);
+    minutesInput.removeAttribute("disabled");
+    secondsInput.removeAttribute("disabled");
 };
 // input을 다시 어떻게 할 수 있을지 생각해보자.
 function resetInterval() {
@@ -283,6 +288,8 @@ function resetInterval() {
     // 주기적으로 이동시키려면 setInterval같은 걸 사용하면 된다.
     scrollBar.style.transform = `translateX(${scrollPosition}px)`;
     updateTimeDisplay();
+    minutesInput.removeAttribute("disabled");
+    secondsInput.removeAttribute("disabled");
 
     scrollArea.addEventListener("wheel", handleWheelEvent);
 }
