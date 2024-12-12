@@ -18,16 +18,30 @@ const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
 const resetButton = document.getElementById("resetButton");
 
+// // Function to Update Time Display
+// function updateTimeDisplay() {
+//     // padStart는 string을 덮어 쓰는 것?
+//     // 주어진 문자열이 첫번째 인자의 길이가 되도록 두번쨰 인자의 값을 추가한다.
+//     // 즉, 두번째 인자를 문자열의 첫번째부터 타겟의 길이가 되도록 덧대는 것이다.
+//     // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+//     const min = String(minutes).padStart(2, "0");
+//     const sec = String(seconds).padStart(2, "0");
+//     timeDisplay.textContent = `${min}:${sec}`;
+// }
+
 // Function to Update Time Display
 function updateTimeDisplay() {
     // padStart는 string을 덮어 쓰는 것?
     // 주어진 문자열이 첫번째 인자의 길이가 되도록 두번쨰 인자의 값을 추가한다.
     // 즉, 두번째 인자를 문자열의 첫번째부터 타겟의 길이가 되도록 덧대는 것이다.
     // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
-    const min = String(minutes).padStart(2, "0");
-    const sec = String(seconds).padStart(2, "0");
+    const min = String(minutesInput.value).padStart(2, "0");
+    const sec = String(secondsInput.value).padStart(2, "0");
     timeDisplay.textContent = `${min}:${sec}`;
+    minutesInput.disable = false;
+    secondsInput.disable = false;
 }
+
 
 // 60분이야.
 // 60분은 60*60초야.
@@ -46,20 +60,20 @@ function parseTimeInput() {
     if (!isNaN(inputMinutes) && !isNaN(inputSeconds)) {
 
         if (inputSeconds > 59) {
-            seconds = 59;
+            secondsInput.value = 59;
         } else if (inputSeconds < 0) {
-            seconds = 0;
+            secondsInput.value = 0;
         } else {
-            seconds = inputSeconds;
+            secondsInput.value = inputSeconds;
         }
 
         if (inputMinutes >= 60) {
-            minutes = 60;
-            seconds = 0;
+            minutesInput.value = 60;
+            secondsInput.value = 0;
         } else if (inputMinutes < 0) {
-            minutes = 25;
+            minutesInput.value = 25;
         } else {
-            minutes = inputMinutes;
+            minutesInput.value = inputMinutes;
         }
     }
 }
@@ -144,50 +158,50 @@ function handleWheelEvent(e) {
     if (delta > 0) {
         // Scrolling down (decrease time)
         // Is || mean OR operation? 
-        if (minutes > 0 || seconds > 0) {
-            seconds -= 10;
-            if (seconds < 0) {
-                seconds = 50;
-                minutes--;
+        if (minutesInput.value > 0 || secondsInput.value > 0) {
+            secondsInput.value -= 10;
+            if (secondsInput.value < 0) {
+                secondsInput.value = 50;
+                minutesInput.value--;
             }
         }
     } else {
         // Scrolling up (increase time)
-        if (minutes < 60) {
-            seconds += 10;
-            if (seconds >= 60) {
-                seconds = 0;
-                minutes++;
+        if (minutesInput.value < 60) {
+            secondsInput.value += 10;
+            if (secondsInput.value >= 60) {
+                secondsInput.value = 0;
+                minutesInput.value++;
             }
         }
     }
 
     // 움직이지 않았던 이유는 index.html의 script의 파일에 지정된 js명이 달랐기 때문이다...
-    if (minutes > 60) {
+    if (minutesInput.value > 60) {
         // BUG: wheel event를 해서 59분에 도달하면 휠 동작이 멈추지만 초는 멈추지 않는다.
         // FIXME: 초도 멈추도록 고정한다.
-        // FIXED: 초가 멈추도록 seconds = 0;을 했다.
-        minutes = 60;
-        seconds = 0;
+        // FIXED: 초가 멈추도록 secondsInput.value = 0;을 했다.
+        minutesInput.value = 60;
+        secondsInput.value = 0;
     };
-    if (minutes < 0) {
-        minutes = 0;
-        seconds = 0;
+    if (minutesInput.value < 0) {
+        minutesInput.value = 0;
+        secondsInput.value = 0;
     }
 
     // Update the time display and the scroll position
     updateTimeDisplay();
 
-    if (minutes == 60) { // 7200px corresponds to 60:00
+    if (minutesInput.value == 60) { // 7200px corresponds to 60:00
         // wheel을 아래로 내리면 여기가 실행된다.
-        console.log("minutes 60이상일 때", { scrollPosition })
+        console.log("minutesInput.value 60이상일 때", { scrollPosition })
         scrollPosition = 7; // 어느 한쪽을 0으로 해서는 안된다. 7200px에 도달해야한다. 
         // scrollPosition이 +가 되는 경우는 언제인가?
         // wheel을 아래로 내리면 발생한다.
         // - * - 로 해서 translateX으로 인해 움직인다. 즉, 왼쪽을 향해 움직인다.
         // 오른쪽으로 빈칸이 발생한다.
         // 이 전제는 flex-start여야한다.
-    } else if (minutes == 0 && seconds == 0) { // 0px corresponds to 00:00
+    } else if (minutesInput.value == 0 && secondsInput.value == 0) { // 0px corresponds to 00:00
         // wheel을 위로 올리면, 여기가 실행된다.
         console.log("minutes 일때", { scrollPosition })
         // scrollPosition이 -가 되는 경우는 언제인가?
@@ -220,18 +234,21 @@ scrollArea.addEventListener("wheel", handleWheelEvent);
 
 function startInterval() {
 
-    if (minutes == 0 && seconds == 0) {
+    if (minutesInput.value == 0 && secondsInput.value == 0) {
         clearInterval(timeInterval);
         timeInterval = null;
     }
 
-    if (seconds == 0) {
+    if (secondsInput.value == 0) {
         scrollPosition += 0.7;
         scrollBar.style.transform = `translateX(${scrollPosition}px)`;
-        seconds = 59;
-        minutes--;
+        secondsInput.value = 59;
+        // minutes--;
+        minutesInput.value--;
+
     } else {
-        seconds--;
+        // seconds--;
+        secondsInput.value--;
         scrollPosition += 0.7;
         scrollBar.style.transform = `translateX(${scrollPosition}px)`;
 
@@ -254,18 +271,19 @@ function stopInterval() {
     timeInterval = null;
     scrollArea.addEventListener("wheel", handleWheelEvent);
 };
-
+// input을 다시 어떻게 할 수 있을지 생각해보자.
 function resetInterval() {
     clearInterval(timeInterval);
     timeInterval = null;
-    minutes = 60;
-    seconds = 0;
+    minutesInput.value = 60;
+    secondsInput.value = 0;
 
     scrollPosition = 0;
     // translateX는 대상을 주어진 인자의 숫자만큼 한번만 이동시키는 것이지, 주기적으로 이동시키는게 아니다.
     // 주기적으로 이동시키려면 setInterval같은 걸 사용하면 된다.
     scrollBar.style.transform = `translateX(${scrollPosition}px)`;
     updateTimeDisplay();
+
     scrollArea.addEventListener("wheel", handleWheelEvent);
 }
 
